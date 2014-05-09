@@ -1,0 +1,13 @@
+# ghc droppings
+*.o
+*.hi
+*.chi
+*.chs.h
+
+# emacs droppings
+*~
+
+# cabal droppings
+/cabal.sandbox.config
+/.cabal-sandbox
+/dist
