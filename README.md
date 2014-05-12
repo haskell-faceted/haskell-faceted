@@ -1,4 +1,4 @@
-haskell-facets
+Faceted values & computations for Haskell
 ==============
 
 Faceted values for Haskell. A work-in-progress.
