@@ -17,7 +17,7 @@ import System.IO
 data FHandle = FHandle View Handle
  
 openFileF :: View -> FilePath -> IOMode -> FIO FHandle
-openFileF view path mode = FIO $ \pc ->
+openFileF view path mode = FIO $ \_ ->
   do handle <- openFile path mode
      return (FHandle view handle)
 
