@@ -6,6 +6,7 @@ module Faceted.FHandle (
   openFileF,
   hPutCharF,
   hGetCharF,
+  hCloseF,
   ) where
 
 import Faceted.Internal
@@ -19,6 +20,9 @@ openFileF :: View -> FilePath -> IOMode -> FIO FHandle
 openFileF view path mode = FIO $ \pc ->
   do handle <- openFile path mode
      return (FHandle view handle)
+
+hCloseF :: FHandle -> FIO ()
+hCloseF (FHandle _ handle) = FIO $ \_ -> hClose handle
 
 hGetCharF :: FHandle -> FIO (Faceted Char)
 hGetCharF (FHandle view handle) = FIO hGetCharForPC
