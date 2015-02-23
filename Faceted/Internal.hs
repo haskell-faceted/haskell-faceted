@@ -7,6 +7,7 @@ module Faceted.Internal(
   Branch(Private,Public),
   View,
   FIO(FIO),
+  runFIO,
   pcF,
   project,
   visibleTo
