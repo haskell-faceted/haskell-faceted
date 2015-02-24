@@ -13,6 +13,8 @@ import Faceted.Internal
 
 import System.IO
 
+import Faceted.FIO(swap)
+
 -- | Facet-aware file handles
 data FHandle = FHandle View Handle
  
@@ -34,3 +36,11 @@ hPutCharF :: FHandle -> Faceted Char -> FIO ()
 hPutCharF (FHandle view handle) ch = FIO hPutCharForPC
   where hPutCharForPC pc | pc `visibleTo` view = hPutChar handle (project view ch)
                          | otherwise = return ()
+
+-- For convenience
+hPutStrF :: FHandle -> Faceted String -> FIO (Faceted ())
+hPutStrF h fs = swap $ do
+  s <- fs
+  return $ do
+    sequence $ map (hPutCharF h . return) s
+    return ()
