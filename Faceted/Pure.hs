@@ -4,6 +4,7 @@ module Faceted.Pure (
   Label,
   Faceted,
   makePrivate,
+  makeFacets,
   makeFaceted,
   makePublic,
   bottom
@@ -19,6 +20,8 @@ bottom = Raw undefined
 
 makePrivate :: Label -> a -> Faceted a
 makePrivate k x = Faceted k (Raw x) (bottom)
+
+makeFacets k x y = Faceted k (Raw x) (Raw y)
 
 -- | x ==> Raw x ===> makePublic x
 
