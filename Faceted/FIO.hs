@@ -3,7 +3,7 @@
 module Faceted.FIO (
   FIO,
   secureRunFIO,
-  branch
+  swap
 ) where
 
 import Faceted.Internal
@@ -13,13 +13,13 @@ secureRunFIO fio = runFIO fio []
 
 -- | Commuting pure and effectful facets
 -- Optimized to prune inconsistent views
-branch :: Faceted (FIO a) -> FIO (Faceted a)
-branch (Raw fio)   = FIO (\pc -> do runFIO fio pc >>= (return . Raw))
-branch (Faceted k priv pub) = FIO branchForPC
-  where branchForPC pc
-          | Private k `elem` pc = runFIO (branch priv) pc
-          | Public k  `elem` pc = runFIO (branch pub) pc
-          | otherwise           = do privV <- runFIO (branch priv) (Private k : pc)
-                                     pubV  <- runFIO (branch pub)  (Public k : pc)
+swap :: Faceted (FIO a) -> FIO (Faceted a)
+swap (Raw fio) = FIO (\pc -> do runFIO fio pc >>= (return . Raw))
+swap (Faceted k priv pub) = FIO swapForPC
+  where swapForPC pc
+          | Private k `elem` pc = runFIO (swap priv) pc
+          | Public k  `elem` pc = runFIO (swap pub) pc
+          | otherwise           = do privV <- runFIO (swap priv) (Private k : pc)
+                                     pubV  <- runFIO (swap pub)  (Public k : pc)
                                      return (Faceted k privV pubV)
-branch Bottom = FIO (\_ -> return Bottom)
+swap Bottom = FIO (\_ -> return Bottom)
