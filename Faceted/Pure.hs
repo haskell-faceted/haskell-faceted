@@ -29,4 +29,3 @@ makePublic :: a -> Faceted a
 makePublic x = Raw x
 
 makeFaceted = Faceted
-
