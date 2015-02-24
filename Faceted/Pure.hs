@@ -14,7 +14,7 @@ import Faceted.Internal
 
 import Control.Applicative
 
-bottom = Raw undefined
+bottom = Bottom
 
 -- | < k ? x : bottom >   ====>  makePrivate k x
 

@@ -22,5 +22,4 @@ branch (Faceted k priv pub) = FIO branchForPC
           | otherwise           = do privV <- runFIO (branch priv) (Private k : pc)
                                      pubV  <- runFIO (branch pub)  (Public k : pc)
                                      return (Faceted k privV pubV)
-
-
+branch Bottom = FIO (\_ -> return Bottom)
