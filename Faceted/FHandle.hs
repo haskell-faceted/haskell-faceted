@@ -34,8 +34,11 @@ hGetCharF (FHandle view handle) = FIO hGetCharForPC
 
 hPutCharF :: FHandle -> Faceted Char -> FIO ()
 hPutCharF (FHandle view handle) ch = FIO hPutCharForPC
-  where hPutCharForPC pc | pc `visibleTo` view = hPutChar handle (project view ch)
-                         | otherwise = return ()
+  where hPutCharForPC pc
+          | pc `visibleTo` view = case project view ch of
+              Just c -> hPutChar handle c
+              Nothing -> return ()
+          | otherwise = return ()
 
 -- For convenience
 hPutStrF :: FHandle -> Faceted String -> FIO (Faceted ())

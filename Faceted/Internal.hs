@@ -76,8 +76,9 @@ pcF (Private k : branches) x y = Faceted k (pcF branches x y) y
 pcF (Public k  : branches) x y = Faceted k y (pcF branches x y)
 
 -- Private
-project :: View -> Faceted a -> a
-project view (Raw v) = v
+project :: View -> Faceted a -> Maybe a
+project view Bottom  = Nothing
+project view (Raw v) = Just v
 project view (Faceted k priv pub)
   | k `elem`    view = project view priv
   | k `notElem` view = project view pub
