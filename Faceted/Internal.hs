@@ -86,8 +86,8 @@ project view (Faceted k priv pub)
 -- Private
 visibleTo :: PC -> View -> Bool
 visibleTo pc view = all consistent pc
-  where consistent (Private k)  = k `elem` view
-        consistent (Public k) = k `notElem` view
+  where consistent (Private k) = k `elem` view
+        consistent (Public k)  = k `notElem` view
 
 
 -- | Faceted IO
