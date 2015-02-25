@@ -17,7 +17,7 @@ data FIORef a = FIORef (IORef a)
 -- | Allocate a new 'FIORef'
 newFIORef :: Faceted a -> FIO (FIORef (Faceted a))
 newFIORef init = FIO newFIORefForPC
-  where newFIORefForPC pc = do var <- newIORef (pcF pc init undefined)
+  where newFIORefForPC pc = do var <- newIORef (pcF pc init Bottom)
                                return (FIORef var)
 
 -- | Read an 'FIORef'

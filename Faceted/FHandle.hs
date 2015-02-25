@@ -30,7 +30,7 @@ hGetCharF :: FHandle -> FIO (Faceted Char)
 hGetCharF (FHandle view handle) = FIO hGetCharForPC
   where hGetCharForPC pc =
           do ch <- hGetChar handle
-             return (pcF (map Private view) (Raw ch) (Raw undefined))
+             return (pcF (map Private view) (Raw ch) Bottom)
 
 hPutCharF :: FHandle -> Faceted Char -> FIO ()
 hPutCharF (FHandle view handle) ch = FIO hPutCharForPC
