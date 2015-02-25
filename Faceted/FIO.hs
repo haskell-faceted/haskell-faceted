@@ -14,7 +14,7 @@ secureRunFIO fio = runFIO fio []
 -- | Commuting pure and effectful facets
 -- Optimized to prune inconsistent views
 swap :: Faceted (FIO a) -> FIO (Faceted a)
-swap (Raw fio) = FIO (\pc -> do runFIO fio pc >>= (return . Raw))
+swap (Raw fio) = FIO (\pc -> runFIO fio pc >>= (return . Raw))
 swap (Faceted k priv pub) = FIO swapForPC
   where swapForPC pc
           | Private k `elem` pc = runFIO (swap priv) pc
