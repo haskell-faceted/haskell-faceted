@@ -11,7 +11,7 @@ Getting Started
     $ cabal repl
 ```
 
-... to be expanded ...
+... To be expanded ...
 
 
 Contributing
