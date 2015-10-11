@@ -1,0 +1,1 @@
+ghc -o run bimonad.hs -i../../../repos/git/github_haskell-faceted/
