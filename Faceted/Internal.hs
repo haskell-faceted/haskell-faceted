@@ -54,7 +54,7 @@ instance Applicative Faceted where
   Bottom <*> x  =  Bottom
 
 -- | Monad: Like applicative, but even more powerful. 'Faceted' the free monad
--- over the function 'Facets a = F Label a a'. 
+-- over the function 'Facets a = F Label a a | B'. 
 instance Monad Faceted where
   return x = Raw x
   (Raw x)              >>= f  = f x
