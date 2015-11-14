@@ -39,14 +39,14 @@ hGetCharF (FHandle view handle) = FIO hGetCharForPC
           | otherwise = return Bottom
 
 hPutCharF :: FHandle -> Faceted Char -> FIO ()
-hPutCharF (FHandle view handle) ch = FIO hPutCharForPC
-  where hPutCharForPC pc
-          | pc `visibleTo` view = case project view ch of
-              Just c -> do
-                putStrLn $ "printing " ++ show c
-                hPutChar handle c
-              Nothing -> return ()
-          | otherwise = return ()
+hPutCharF (FHandle view handle) ch = FIO f where
+  f :: PC -> IO ()
+  f pc | pc `visibleTo` view = case project view (runFaceted ch pc) of
+                                 Just c -> do
+                                   putStrLn $ "printing " ++ show c
+                                   hPutChar handle c
+                                 Nothing -> return ()
+       | otherwise           = return ()
 
 prod = liftM join . swap
 

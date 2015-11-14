@@ -2,7 +2,7 @@
 
 module Faceted.FIO (
   FIO,
-  secureRunFIO,
+  runFIO,
   swap,
   primitive
 ) where
@@ -14,17 +14,17 @@ import Control.Monad(liftM)
 -- | With an empty context it is safe to run
 secureRunFIO fio = runFIO fio []
 
--- | Commuting pure and effectful facets
--- Optimized to prune inconsistent views
 prod :: Faceted (FIO (Faceted a)) -> FIO (Faceted a)
-prod (Raw fio) = fio
-prod (Faceted k priv pub) = FIO f where
-  f pc | Private k `elem` pc = runFIO (prod priv) pc
-       | Public k  `elem` pc = runFIO (prod pub) pc
-       | otherwise           = do privV <- runFIO (prod priv) (Private k : pc)
-                                  pubV  <- runFIO (prod pub)  (Public k : pc)
-                                  return (Faceted k privV pubV)
-prod Bottom = return Bottom
+prod ua = FIO f where
+  f pc = g (runFaceted ua pc) where
+    g (Raw fio) = runFIO fio pc
+    g (Faceted k priv pub)
+        | Private k `elem` pc = runFIO (prod priv) pc
+        | Public k  `elem` pc = runFIO (prod pub) pc
+        | otherwise           = do privV <- runFIO (prod priv) (Private k : pc)
+                                   pubV  <- runFIO (prod pub)  (Public k : pc)
+                                   return (Faceted k privV pubV)
+    g Bottom = return Bottom
 
 primitive :: FIO Int
 primitive = FIO $ \pc ->
